@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Repo Directory</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin: 10px 0;
+        }
+        a {
+            text-decoration: none;
+            color: #007BFF;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>Extension Directory</h1>
+    <ul id="file-list">
+        <!-- Files and folders will be dynamically added here -->
+    </ul>
+    <script>
+        async function fetchGitHubRepo() {
+            const repoUrl = 'https://api.github.com/repos/bradbee/Extensions/contents';
+            try {
+                const response = await fetch(repoUrl);
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.statusText}`);
+                }
+                const data = await response.json();
+
+                const list = document.getElementById('file-list');
+                list.innerHTML = '';
+
+                data.forEach(item => {
+                    const li = document.createElement('li');
+                    const a = document.createElement('a');
+                    a.href = item.html_url;
+                    a.textContent = item.name + (item.type === 'dir' ? '/' : '');
+                    li.appendChild(a);
+                    list.appendChild(li);
+                });
+            } catch (error) {
+                console.error('Failed to fetch repository contents:', error);
+            }
+        }
+
+        fetchGitHubRepo();
+    </script>
+</body>
+</html>
