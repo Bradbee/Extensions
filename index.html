@@ -8,31 +8,80 @@
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
+            background-color: #f4f4f9;
+            color: #333;
         }
         h1 {
             text-align: center;
+            margin-bottom: 20px;
+            color: #007BFF;
         }
         ul {
             list-style-type: none;
             padding: 0;
+            max-width: 600px;
+            margin: 0 auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
         }
         li {
-            margin: 10px 0;
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            border-bottom: 1px solid #ddd;
+            transition: background-color 0.3s;
+        }
+        li:last-child {
+            border-bottom: none;
+        }
+        li:hover {
+            background-color: #f0f8ff;
         }
         a {
             text-decoration: none;
             color: #007BFF;
+            margin-left: 10px;
+            font-weight: 500;
+            flex-grow: 1;
         }
         a:hover {
             text-decoration: underline;
         }
+        .icon {
+            font-size: 1.2em;
+            margin-right: 10px;
+            color: #555;
+        }
+        .repo-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .repo-link a {
+            text-decoration: none;
+            color: white;
+            background-color: #007BFF;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s;
+        }
+        .repo-link a:hover {
+            background-color: #0056b3;
+        }
     </style>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 <body>
     <h1>Extension Directory</h1>
     <ul id="file-list">
         <!-- Files and folders will be dynamically added here -->
     </ul>
+    <div class="repo-link">
+        <a href="https://github.com/bradbee/Extensions" target="_blank">View Repository on GitHub</a>
+    </div>
     <script>
         async function fetchGitHubRepo() {
             const repoUrl = 'https://api.github.com/repos/bradbee/Extensions/contents';
@@ -48,9 +97,13 @@
 
                 data.forEach(item => {
                     const li = document.createElement('li');
+                    const icon = document.createElement('i');
+                    icon.className = `icon fas fa-${item.type === 'dir' ? 'folder' : 'file-alt'}`;
                     const a = document.createElement('a');
                     a.href = item.html_url;
-                    a.textContent = item.name + (item.type === 'dir' ? '/' : '');
+                    a.textContent = item.name;
+
+                    li.appendChild(icon);
                     li.appendChild(a);
                     list.appendChild(li);
                 });
