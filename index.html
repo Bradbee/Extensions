@@ -112,7 +112,14 @@
                     const icon = document.createElement('i');
                     icon.className = `icon fas fa-${item.type === 'dir' ? 'folder' : 'file-alt'}`;
                     const a = document.createElement('a');
-                    a.href = item.html_url;
+
+                    if (item.type === 'file') {
+                        const fileName = item.name;
+                        a.href = `https://bradbee.github.io/My-turbowarp-stuff/${fileName}`;
+                    } else {
+                        a.href = item.html_url;
+                    }
+
                     a.textContent = item.name;
 
                     li.appendChild(icon);
