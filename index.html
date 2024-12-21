@@ -16,6 +16,15 @@
             margin-bottom: 20px;
             color: #007BFF;
         }
+        #search-bar {
+            display: block;
+            margin: 0 auto 20px;
+            max-width: 600px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
         ul {
             list-style-type: none;
             padding: 0;
@@ -76,6 +85,7 @@
 </head>
 <body>
     <h1>Extension Directory</h1>
+    <input type="text" id="search-bar" placeholder="Search files and folders...">
     <ul id="file-list">
         <!-- Files and folders will be dynamically added here -->
     </ul>
@@ -97,6 +107,8 @@
 
                 data.forEach(item => {
                     const li = document.createElement('li');
+                    li.dataset.name = item.name.toLowerCase(); // Store the name for search
+
                     const icon = document.createElement('i');
                     icon.className = `icon fas fa-${item.type === 'dir' ? 'folder' : 'file-alt'}`;
                     const a = document.createElement('a');
@@ -106,6 +118,15 @@
                     li.appendChild(icon);
                     li.appendChild(a);
                     list.appendChild(li);
+                });
+
+                // Attach search functionality
+                const searchBar = document.getElementById('search-bar');
+                searchBar.addEventListener('input', function() {
+                    const searchQuery = this.value.toLowerCase();
+                    Array.from(list.children).forEach(li => {
+                        li.style.display = li.dataset.name.includes(searchQuery) ? '' : 'none';
+                    });
                 });
             } catch (error) {
                 console.error('Failed to fetch repository contents:', error);
